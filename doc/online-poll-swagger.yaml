@@ -1,0 +1,158 @@
+openapi: 3.0.1
+info:
+  title: OnlinePoll - API
+  description: 'Sistema de votação em tempo real onde os usuários podem criar uma enquete e outros usuários podem votar. O sistema gera um ranking entre as opções e atualiza os votos em tempo real.'
+  version: v1.0.0
+externalDocs:
+  description: Source Code
+  url: https://github.com/mateusCoder/Polls
+servers:
+  - url: http://localhost:3333
+    description: Generated server url
+paths:
+  /polls:
+    post:
+      summary: Criar uma nova enquete.
+      requestBody:
+        $ref: "#/components/requestBodies/pollRequestBody"
+      responses:
+        '201':
+          description: Sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/pollResponseBody"
+
+  /polls/{pollId}:
+    get:
+      summary: Retornar dados de uma única enquete.
+      parameters:
+        - $ref: "#/components/parameters/pollId"
+      responses:
+        '200':
+          description: Sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/pollDetails"
+
+  /polls/{pollId}/votes:
+    post:
+      summary: Adicionar um voto a uma enquete específica.
+      parameters:
+        - $ref: "#/components/parameters/pollId"
+      requestBody:
+        $ref: "#/components/requestBodies/voteRequestBody"
+      responses:
+        '201':
+          description: Criado.
+
+  /polls/{pollId}/results:
+    get:
+      summary: Mensagem de resultados em WebSockets.
+      parameters:
+        - $ref: "#/components/parameters/pollId"
+      responses:
+        '200':
+          description: Sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/websocketMessage"
+
+components:
+  parameters:
+    pollId:
+      in: path
+      name: pollId
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    pollResponseBody:
+      type: object
+      properties:
+        pollId:
+          type: string
+      example:
+        pollId: "194cef63-2ccf-46a3-aad1-aa94b2bc89b0"
+
+    option:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        score:
+          type: integer
+      example:
+        id: "4af3fca1-91dc-4c2d-b6aa-897ad5042c84"
+        title: "JavaScript"
+        score: 1
+
+    pollDetails:
+        type: object
+        properties:
+          poll:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              options:
+                type: array
+                items:
+                  $ref: "#/components/schemas/option"
+            example:
+              id: "e4365599-0205-4429-9808-ea1f94062a5f"
+              title: "Qual a melhor linguagem de programação?"
+              options:
+                - id: "4af3fca1-91dc-4c2d-b6aa-897ad5042c84"
+                  title: "JavaScript"
+                  score: 1
+
+    websocketMessage:
+      type: object
+      properties:
+        pollOptionId:
+          type: string
+        votes:
+          type: integer
+      example:
+        pollOptionId: "da9601cc-0b58-4395-8865-113cbdc42089"
+        votes: 2
+
+  requestBodies:
+    pollRequestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              options:
+                type: array
+                items:
+                  type: string
+            example:
+              title: "Qual a melhor linguagem de programação?"
+              options:
+                - "JavaScript"
+                - "Java"
+                - "PHP"
+                - "C#"
+
+    voteRequestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              pollOptionId:
+                type: string
+            example:
+              pollOptionId: "31cca9dc-15da-44d4-ad7f-12b86610fe98"
