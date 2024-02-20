@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "10b68b45-3bac-4fce-b61d-bd65f1ec2bba",
+		"name": "Polls",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13473204"
+	},
+	"item": [
+		{
+			"name": "Create Poll",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Qual melhor framework java?\",\r\n    \"options\": [\"Spring\", \"Quarkus\", \"Hibernate\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/polls",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"polls"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Poll By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3333/polls/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"polls",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Vote On Poll",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pollOptionId\": \"6cd1cc8f-0144-464d-959f-9b81ecaae1c5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/polls/77f5cddd-eeae-4ce6-a46d-5185c40eb0af/votes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"polls",
+						"77f5cddd-eeae-4ce6-a46d-5185c40eb0af",
+						"votes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
